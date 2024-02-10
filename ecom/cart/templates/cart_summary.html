@@ -10,6 +10,62 @@
                 </div>
             </div>
         </header>
+        <div class="container">
+            {% if cart_products %}
+                {% for product in cart_products %}
+                <div class="card mb-3">
+                    <div class="row g-0">
+                        <div class="col-md-4">
+                        <img src="{{ product.image.url }}" class="img-fluid rounded-start" alt="Image of the product">
+                        </div>
+                        <div class="col-md-8">
+                        <div class="card-body">
+                        <center>
+                            <h5 class="card-title">{{ product.name }}</h5>
+                            <p class="card-text">{{ product.description }}</p>
+                            
+                            {% if product.is_sale %}
+            
+                                <div class="d-flex
+                                justify-content-center small
+                                text-warning mb-2">
+                                <div class="bi-star-fill"></div>
+                                &nbsp;SALE!&nbsp;
+                                <div class="bi-star-fill"></div>
+                            </div>
+            
+                            <!-- Product price-->
+                            <strike>€{{product.price}}</strike>
+                            <br>
+                            €{{product.sale_price}}
+                            <br>
+            
+                            {% else %}
+            
+                            €{{product.price}}
+                            <br>
+                            
+                            <br>
+            
+                            {% endif %}
+            
+                            <br>
+                            <a href="{% url 'home' %}" class="btn btn-secondary">Home</a>
+                            <br><br>
+                        </div>
+                        </div>
+                    </div>
+                    </center>
+                    </div>        
+                <br>
+                {% endfor %}
+            {% else %}
+            <center>
+                <br>
+                <h1>There's nothing in your cart!</h1>
+            </center>
+            {% endif %}
+        </div>
         <br>
         <br>
         <br>
