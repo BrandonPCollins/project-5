@@ -11,7 +11,8 @@ from django import forms
 
 def home(request):
     products = Product.objects.all()
-    return render(request, 'home.html', {'products':products})
+    categories = Category.objects.all()  # Fetch all categories
+    return render(request, 'home.html', {'products': products, 'categories': categories})
 
 def about(request):
     return render(request, 'about.html', {})
@@ -31,6 +32,9 @@ def category(request, foo):
         messages.success(request, ("That Category Doesn't Exist"))
         return redirect('home')
 
+def category_summary(request):
+    categories = Category.objects.all()
+    return render(request, 'category_summary.html', {"categories":categories})
 
 def login_user(request):
     if request.method == "POST":
