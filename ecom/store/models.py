@@ -1,4 +1,6 @@
 from django.db import models
+from django.contrib.auth.models import User 
+from django.db.models.signals import post_save
 import datetime
 
 #Categories of Products
@@ -21,6 +23,30 @@ class Customer(models.Model):
 
     def __str__(self):
         return f'{self.first_name} {self.last_name}'
+
+#Customer Profile
+class Profile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    date_modified = models.DateTimeField(User, auto_now=True)
+    phone = models.CharField(max_length=20, blank=True)
+    address1 = models.CharField(max_length=20, blank=True)
+    address2 = models.CharField(max_length=20, blank=True)
+    city = models.CharField(max_length=20, blank=True)
+    state = models.CharField(max_length=20, blank=True)
+    eircode = models.CharField(max_length=20, blank=True)
+    county = models.CharField(max_length=20, blank=True)
+
+    def __str__(self):
+        return self.user.username
+
+#Create User Profile upon signing up
+def create_profile(sender, instance, created, **kwargs):
+    if created:
+        user_profile = Profile(user=instance)
+        user_profile.save()
+
+#Automate Profile creation
+post_save.connect(create_profile, sender=User)
 
 #Product Model
 class Product(models.Model):
